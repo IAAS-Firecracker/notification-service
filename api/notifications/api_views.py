@@ -129,14 +129,14 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = []
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = [
-        "username",
+        "name",
         "email",
         "user_id"
 
        
     ]
     ordering_fields = [
-        "username",
+        "name",
         "email",
         "user_id"
     ]

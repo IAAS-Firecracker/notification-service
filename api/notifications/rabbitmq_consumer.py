@@ -46,8 +46,8 @@ async def on_account_message(message: AbstractIncomingMessage) -> None:
             template = TemplateEmail(
                to= account_data.get("email"),
                template="signup",
-               subject="Welcome to e-library",
-               context={"user": account_data.get("username"), "email": settings.EMAIL_HOST_USER 
+               subject="Welcome to IAAS-Firecracker",
+               context={"user": account_data.get("name"), "email": settings.EMAIL_HOST_USER 
                         },
                from_email=settings.EMAIL_HOST_USER,
                app_name="notifications",
@@ -133,23 +133,23 @@ async def main() -> None:
         await channel.set_qos(prefetch_count=1)
 
         account_exchange = await channel.declare_exchange(
-            "accountExchange", ExchangeType.FANOUT,durable=True
+            "UserNotificationExchange", ExchangeType.FANOUT,durable=True
         )
 
-        subscription_exchange = await channel.declare_exchange(
-            "subscriptionExchange", ExchangeType.FANOUT,durable=True
-        )
+        # subscription_exchange = await channel.declare_exchange(
+        #     "subscriptionExchange", ExchangeType.FANOUT,durable=True
+        # )
         
-        account_notification_queue = await channel.declare_queue(name="accountNotificationQueue",durable=True)
-        subscription_notification_queue = await channel.declare_queue(name="subscriptionNotificationQueue",durable=True)
+        account_notification_queue = await channel.declare_queue(name="notificationQueue",durable=True)
+        #subscription_notification_queue = await channel.declare_queue(name="subscriptionNotificationQueue",durable=True)
 
         await account_notification_queue.bind(account_exchange)
-        await subscription_notification_queue.bind(subscription_exchange)
+       # await subscription_notification_queue.bind(subscription_exchange)
 
         await account_notification_queue.consume(on_account_message)
-        logger.info("[*] Waiting for subscription events. To exit press CTRL+C")
+        #logger.info("[*] Waiting for subscription events. To exit press CTRL+C")
 
-        await subscription_notification_queue.consume(on_subscription_message)
+        #await subscription_notification_queue.consume(on_subscription_message)
 
         #await notifications_account_queue.consume(on_account_message)
 

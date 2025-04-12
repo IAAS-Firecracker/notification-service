@@ -28,7 +28,7 @@ print(CONF)
 eureka_conf = {
  'server':  CONF.get("propertySources")[0].get('source').get('eureka.client.service-url.defaultZone','http://service-registry:8761/eureka'),
  'app_name': 'NOTIFICATION-SERVICE',
- 'port': int( CONF.get("propertySources")[0].get('source').get('server.port'))
+ 'port': int( CONF.get("propertySources")[0].get('source').get('server.port','8085'))
 }
 print(eureka_conf)
 init_eureka(eureka_conf)
@@ -144,7 +144,7 @@ REST_FRAMEWORK = {
    
 }
 
-FORCE_SCRIPT_NAME = '/NOTIFICATION-SERVICE'  # Set to the service's base path
+#FORCE_SCRIPT_NAME = '/NOTIFICATION-SERVICE'  # Set to the service's base path
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

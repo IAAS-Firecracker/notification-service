@@ -4,15 +4,22 @@ from django.db import models
 
 MESSAGE_TYPE = (
     ("SIGNUP","SIGNUP"),
-    ("SUBSCRIPTION","SUBSCRIPTION"),
-    ("LENDING","LENDING")
+    ("VM_CREATION","VM CREATION"),
+    ("OFFER_SUBCRIPTION","OFFER SUBSCRIPTION"),
+)
+
+ROLE = (
+    ("USER","user"),
+    ("ADMIN", "admin"),
 )
 
 class User(models.Model):
     user_id = models.IntegerField()
-    username = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
     email = models.EmailField(max_length=255)
-    is_superuser = models.BooleanField(default=False)
+    role = models.CharField(max_length=32, choices=ROLE,default="user")
+    token = models.CharField(max_length=255, null=True, blank=True)
+
 class Notification(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
